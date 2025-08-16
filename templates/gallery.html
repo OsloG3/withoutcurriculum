@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>without curriculum</title>
+    <link rel="stylesheet" href="static/style.css">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+		}
+		.gallery {
+			column-count: 4;
+			column-gap: 15px;
+		}
+		.gallery img {
+			width: 100%;
+			margin-bottom: 15px;
+			display: block;
+			border-radius: 0.5px;
+			box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+			cursor: pointer;
+			transition: transform 0.2s;
+		}
+		.gallery img:hover {
+			transform: scale(1.02);
+		}
+		#lightbox {
+			display: none;
+			position: fixed;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			background: rgba(0,0,0,0.9);
+			justify-content: center;
+			align-items: center;
+			z-index: 9999;
+		}
+		#lightbox img {
+			max-width: 90%;
+			max-height: 90%;
+		}
+	</style>
+</head>
+<body>
+    {{template "header.html"}}
+		<div class="gallery">
+			{{range .Images}}
+				<a href="#lightbox" onclick="showImage('{{.}}')">
+					<img src="{{.}}" alt="">
+				</a>
+			{{end}}
+		</div>
+
+	<div id="lightbox" onclick="this.style.display='none'">
+		<img id="lightbox-img" src="">
+	</div>
+	
+		<script>
+			function showImage(src) {
+				var lb = document.getElementById("lightbox");
+				var img = document.getElementById("lightbox-img");
+				img.src = src;
+				lb.style.display = "flex";
+			}
+		</script>
+</body>
+</html>
+
