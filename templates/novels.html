@@ -5,26 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>without curriculum</title>
     <link rel="stylesheet" href="static/style.css">
+    <style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+		}
+		.gallery {
+            display: flex;
+            gap: 15px; /* space between columns */
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* space between items */
+        }
+		.gallery img {
+			width: 100%;
+			margin-bottom: 15px;
+			display: block;
+			border-radius: 0.5px;
+			cursor: pointer;
+			transition: transform 0.2s;
+		}
+		.gallery img:hover {
+			transform: scale(1.02);
+		}
+	</style>
 </head>
 <body>
     {{template "header.html"}}
-    <section id="about">
-        
-        <div class=row_nov>
-                <a href="/?category=novels&text=comedia_ita.txt"><img src="static/media/sogni-inabissati.png"></a> 
-                <a href="/?category=novels&text=comedia_spa.txt"><img src="static/media/comediai_spa.jpeg"></a> 
-                <a href="/?category=novels&text=comedia_rus.txt"><img src="static/media/CommediaRUS.png"></a>
-                <a href="/?category=novels&text=comedia_prt.txt"><img src="static/media/commediaPORT.png"></a>        
+    <section id="about">    
+        <div class="gallery">
+            <div class="column">
+                    <a href="/?category=novels&text=comedia_ita.txt"><img src="static/media/sogni-inabissati.png"></a> 
+                    <a href="/?category=novels&text=comedia_spa.txt"><img src="static/media/comediai_spa.jpeg"></a> 
+                    <a href="/?category=novels&text=comedia_rus.txt"><img src="static/media/CommediaRUS.png"></a>
+                    <a href="/?category=novels&text=comedia_prt.txt"><img src="static/media/commediaPORT.png"></a> 
+            </div>
+            <div class="column">
+                    <a href="/?category=novels&text=i_cerchi_della_solitudine.txt"><img src="static/media/cerchi.png"></a>
+                    <a href="/?category=novels&text=i_cerchi_della_solitudine_spa.txt"><img src="static/media/spa_cerchi.png"></a> 
+                    <a href="/?category=novels&text=i_cerchi_della_solitudine_rus.txt"><img src="static/media/rus1.png"></a> 
+            </div>
+            <div class="column">
+                    <a href="/?category=novels&text=gli_eletti.txt"><img src="static/media/gli-eletti.png"></a>
+            </div>                                    
         </div>
-        <div class=row_nov>
-                <a href="/?category=novels&text=i_cerchi_della_solitudine.txt"><img src="static/media/cerchi.png"></a>
-                <a href="/?category=novels&text=i_cerchi_della_solitudine_spa.txt"><img src="static/media/spa_cerchi.png"></a>  
-                <a href="/?category=novels&text=i_cerchi_della_solitudine_rus.txt"><img src="static/media/rus1.png"></a>      
-        </div>
-        <div class=row_nov>
-                <a href="/?category=novels&text=gli_eletti.txt"><img src="static/media/gli-eletti.png"></a>        
-        </div>
-        
     </section>
 <div class="footer">Tinca Gardenghi</div>
 </body>

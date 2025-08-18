@@ -54,7 +54,7 @@ func main() {
 
 	// Serve images statically
 	for _, d := range dirs {
-		http.Handle("/static/"+d+"/", http.StripPrefix("/static/"+d+"/", http.FileServer(http.Dir(d))))
+		http.Handle("/static/images/"+d+"/", http.StripPrefix("/static/images/"+d+"/", http.FileServer(http.Dir("static/images/"+d))))
 	}
 
 	log.Println("Server running at http://localhost:8080")
@@ -65,14 +65,15 @@ func galleryHandler(w http.ResponseWriter, r *http.Request) {
 	var images []string
 
 	for _, dir := range dirs {
-		files, err := os.ReadDir(dir)
+		files, err := os.ReadDir("static/images/" + dir)
 		if err != nil {
 			continue
 		}
+
 		for _, file := range files {
 			ext := strings.ToLower(filepath.Ext(file.Name()))
 			if !file.IsDir() && allowedExts[ext] {
-				images = append(images, "/static/"+dir+"/"+file.Name())
+				images = append(images, "/static/images/"+dir+"/"+file.Name())
 			}
 		}
 	}
