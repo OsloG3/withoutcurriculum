@@ -6,7 +6,10 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
+
+	"github.com/microcosm-cc/bluemonday"
 )
 
 var (
@@ -29,6 +32,7 @@ type PageData struct {
 	Texts      []Text
 	Selected   string
 	Content    string
+	HContent   template.HTML
 }
 
 var templates = template.Must(template.ParseFiles(
@@ -121,17 +125,33 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if category != "" {
 
 		if text != "" {
-			content, err := os.ReadFile(filepath.Join("static", category, text))
-			if err != nil {
-				http.Error(w, "Cannot read text file", http.StatusInternalServerError)
-				return
+			if category == "novels" {
+				hContent, err := os.ReadFile(filepath.Join("static", category, text))
+				if err != nil {
+					http.Error(w, "Cannot read text file", http.StatusInternalServerError)
+					return
+				}
+				data.HContent = template.HTML(string(hContent))
+			} else {
+				Content, err := os.ReadFile(filepath.Join("static", category, text))
+				if err != nil {
+					http.Error(w, "Cannot read text file", http.StatusInternalServerError)
+					return
+				}
+				data.Content = string(Content)
 			}
-			data.Content = string(content)
 		} else {
 			files, err := os.ReadDir(filepath.Join("static", category))
 			if err != nil {
 				http.Error(w, "Cannot read category folder", http.StatusInternalServerError)
 				return
+			}
+
+			// For translation we want to sort by author which is at the end of the name
+			if strings.HasPrefix(category, "traduzioni") {
+				sort.Slice(files, func(i, j int) bool {
+					return reverse(files[i].Name()) > reverse(files[j].Name())
+				})
 			}
 
 			for _, f := range files {
@@ -153,4 +173,27 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	}
+}
+
+// ################################################################################################
+// Helper functions                                                                                                                                                             ###
+// ################################################################################################
+
+func sanitizeContent(raw string) template.HTML {
+	// Allow only simple formatting tags
+	policy := bluemonday.UGCPolicy()
+	policy.AllowElements("i", "b", "em", "strong")
+	safe := policy.Sanitize(raw)
+
+	// Mark safe for template rendering
+	return template.HTML(safe)
+}
+
+// reverse a string
+func reverse(s string) string {
+	runes := []rune(s)
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
+	}
+	return string(runes)
 }
