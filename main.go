@@ -13,10 +13,9 @@ import (
 )
 
 var (
-	dirs        = []string{"img1", "img2", "img3"}
+	dirs        = []string{"avif_nuove", "avif_pum", "avif_riflessi", "avif_oa", "avif_fpn"}
 	allowedExts = map[string]bool{
-		".jpg": true, ".jpeg": true, ".png": true,
-		".gif": true, ".webp": true,
+		".avif": true,
 	}
 )
 
@@ -43,6 +42,8 @@ var templates = template.Must(template.ParseFiles(
 	"templates/header.html",
 	"templates/novels.html",
 	"templates/gallery.html",
+	"templates/contacts.html",
+	"templates/authors.html",
 ))
 
 type ImagePageData struct {
@@ -53,6 +54,7 @@ func main() {
 	http.HandleFunc("/gallery", galleryHandler)
 	http.HandleFunc("/novels", novelsHandler)
 	http.HandleFunc("/contacts", contactsHandler)
+	http.HandleFunc("/authors", authorsHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.HandleFunc("/", indexHandler)
 
@@ -97,17 +99,17 @@ func novelsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func contactsHandler(w http.ResponseWriter, r *http.Request) {
-
 	data := PageData{}
 
-	content, err := os.ReadFile("static/contacts.txt")
-	if err != nil {
-		http.Error(w, "Cannot read text file", http.StatusInternalServerError)
-		return
+	if err := templates.ExecuteTemplate(w, "contacts.html", data); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	data.Content = string(content)
+}
 
-	if err := templates.ExecuteTemplate(w, "base.html", data); err != nil {
+func authorsHandler(w http.ResponseWriter, r *http.Request) {
+	data := PageData{}
+
+	if err := templates.ExecuteTemplate(w, "authors.html", data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
