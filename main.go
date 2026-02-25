@@ -127,7 +127,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if category != "" {
 
 		if text != "" {
-			if category == "novels" {
+			if category == "novels" || category == "author" {
 				hContent, err := os.ReadFile(filepath.Join("static", category, text))
 				if err != nil {
 					http.Error(w, "Cannot read text file", http.StatusInternalServerError)
