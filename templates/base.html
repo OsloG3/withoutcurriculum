@@ -11,7 +11,8 @@
         <section id="about">
             {{if .Selected}} {{template "texts.html" .}} {{end}} {{if .Content}}
             {{template "content.html" .}} {{end}} {{if .HContent}}
-            <p style="margin-left: 3%; margin-right: 3%">{{.HContent}}</p>
+            <div class="hcont">{{.HContent}}</div>
+
             {{end}}
         </section>
     </body>

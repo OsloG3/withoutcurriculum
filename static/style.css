@@ -25,6 +25,32 @@ header {
     padding: 0.4em;
 }
 
+.hcont {
+    display: float;
+    padding-left: 1.5em;
+    align-items: flex-start;
+    padding-right: 2%;
+}
+
+.hcont ul {
+    margin-left: 0.5em;
+    list-style-type: none;
+}
+
+.hcont img {
+    max-width: 40vw;
+    height: auto;
+    padding-bottom: 3%;
+    padding-left: 2%;
+    padding-right: 0%;
+    margin-left: auto;
+    float: right;
+}
+
+.hcont img + img {
+    clear: right;
+}
+
 header p {
     font-size: 2em;
 }
@@ -133,10 +159,6 @@ section img {
     padding-right: 5%;
     float: left;
     width: 50%;
-}
-
-img {
-    padding-bottom: 5%;
 }
 
 .col_40 {
