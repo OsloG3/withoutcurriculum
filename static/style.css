@@ -135,6 +135,10 @@ section img {
     width: 50%;
 }
 
+img {
+    padding-bottom: 5%;
+}
+
 .col_40 {
     float: left;
     width: 40%;
