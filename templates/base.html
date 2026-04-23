@@ -9,10 +9,37 @@
     <body>
         {{template "header.html"}}
         <section id="about">
-            {{if .Selected}} {{template "texts.html" .}} {{end}} {{if .Content}}
-            {{template "content.html" .}} {{end}} {{if .HContent}}
+            {{if .Selected}} {{template "texts.html" .}} {{end}} {{if
+            .AlshynbaiPoem}}
+            <img
+                src="static/media/Alshynbai2.jpeg"
+                alt="Alshynbai"
+                style="
+                    max-width: 40vw;
+                    height: auto;
+                    padding-bottom: 3%;
+                    padding-left: 2%;
+                    padding-right: 2%;
+                    margin-left: auto;
+                    float: right;
+                "
+            />
+            {{end}} {{if .Content}}
+            <pre
+                style="
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    overflow-wrap: anywhere;
+                    text-align: justify;
+                    margin-left: 3%;
+                    margin-right: 3%;
+                    margin-top: 0px;
+                "
+            >
+                {{.Content}}
+            </pre>
+            {{end}} {{if .HContent}}
             <div class="hcont">{{.HContent}}</div>
-
             {{end}}
         </section>
     </body>

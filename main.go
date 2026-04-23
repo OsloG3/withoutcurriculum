@@ -27,11 +27,12 @@ type Text struct {
 
 // PageData holds the data passed to templates
 type PageData struct {
-	Categories []string
-	Texts      []Text
-	Selected   string
-	Content    string
-	HContent   template.HTML
+	Categories    []string
+	Texts         []Text
+	Selected      string
+	Content       string
+	AlshynbaiPoem bool
+	HContent      template.HTML
 }
 
 var templates = template.Must(template.ParseFiles(
@@ -135,6 +136,9 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 				}
 				data.HContent = template.HTML(string(hContent))
 			} else {
+				if category == "authors_text" && (text == "poem_ita.txt" || text == "Alshynbai_poem.txt") {
+					data.AlshynbaiPoem = true
+				}
 				Content, err := os.ReadFile(filepath.Join("static", category, text))
 				if err != nil {
 					http.Error(w, "Cannot read text file", http.StatusInternalServerError)
