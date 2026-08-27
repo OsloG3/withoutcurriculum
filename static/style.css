@@ -118,7 +118,7 @@ a {
 section {
     min-height: 85vh;
     width: 95%;
-    max-width: 40cm;
+    max-width: max(33cm, 75%);
     background: #e5e6e3;
     margin-right: auto;
     margin-left: auto;
