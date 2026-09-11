@@ -1,6 +1,13 @@
-<div class='pad'>
-{{range .Texts}}
-    <p class='select'><a href='/?category={{$.Selected}}&text={{.Filename}}'>{{.DisplayName}}</a><p></p>
-{{end}}
+{{if .Texts}}
+<div class="pad">
+    <ul class="toc">
+        {{range .Texts}}
+        <li>
+            <a href="/?category={{$.Selected}}&text={{.Filename}}"
+                ><span class="title-text">{{.DisplayName}}</span></a
+            >
+        </li>
+        {{end}}
+    </ul>
 </div>
-
+{{end}}

@@ -1,65 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>without curriculum</title>
-    <link rel="icon" type="image/svg+xml" href="static/favicon.svg">
-    <link rel="stylesheet" href="static/style.css">
-</head>
-<body class="gallery-body">
-    {{template "header.html"}}
-		<div class="gallery">
-			{{range .Images}}
-				<a href="#lightbox" onclick="showImage('{{.}}')">
-					<img src="{{.}}" alt="">
-				</a>
-			{{end}}
-		</div>
+    <head>
+        {{template "head"}}
+    </head>
+    <body>
+        {{template "header.html"}}
+        <section class="page" id="gallery">
+            <h2 class="page-title">
+                <span class="orn">{{template "flower"}}</span> Photographs
+                <span class="orn">{{template "flower"}}</span>
+            </h2>
+            <div class="gallery">
+                {{range .Images}}
+                <a
+                    href="#lightbox"
+                    onclick="showImage('{{.Src}}'); return false;"
+                    ><img
+                        src="{{.Src}}"
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        {{with .Ratio}}style="aspect-ratio: {{.}}"{{end}}
+                /></a>
+                {{end}}
+            </div>
+        </section>
 
-	<div id="lightbox">
-		<button class="lb-btn" id="lb-close" onclick="closeLightbox()">&#10005;</button>
-		<button class="lb-btn" id="lb-prev" onclick="navImage(-1)">&#10094;</button>
-		<img id="lightbox-img" src="">
-		<button class="lb-btn" id="lb-next" onclick="navImage(1)">&#10095;</button>
-	</div>
+        <div id="lightbox">
+            <button
+                class="lb-btn"
+                id="lb-close"
+                aria-label="Close"
+                onclick="closeLightbox()"
+            >
+                &#10005;
+            </button>
+            <button
+                class="lb-btn"
+                id="lb-prev"
+                aria-label="Previous"
+                onclick="navImage(-1)"
+            >
+                &#10094;
+            </button>
+            <img id="lightbox-img" src="" alt="Enlarged photograph" />
+            <button
+                class="lb-btn"
+                id="lb-next"
+                aria-label="Next"
+                onclick="navImage(1)"
+            >
+                &#10095;
+            </button>
+        </div>
 
-		<script>
-			var images = [];
-			var currentIdx = 0;
+        <script>
+            var images = [];
+            var currentIdx = 0;
 
-			{{range .Images}}
-			images.push('{{.}}');
-			{{end}}
+            {{range .Images}}
+            images.push('{{.Src}}');
+            {{end}}
 
-			function showImage(src) {
-				currentIdx = images.indexOf(src);
-				var lb = document.getElementById("lightbox");
-				var img = document.getElementById("lightbox-img");
-				img.src = src;
-				lb.style.display = "flex";
-			}
+            function showImage(src) {
+                currentIdx = images.indexOf(src);
+                var lb = document.getElementById("lightbox");
+                var img = document.getElementById("lightbox-img");
+                img.src = src;
+                lb.style.display = "flex";
+                document.body.style.overflow = "hidden";
+            }
 
-			function closeLightbox() {
-				document.getElementById("lightbox").style.display = "none";
-			}
+            function closeLightbox() {
+                document.getElementById("lightbox").style.display = "none";
+                document.body.style.overflow = "";
+            }
 
-			function navImage(dir) {
-				currentIdx = (currentIdx + dir + images.length) % images.length;
-				document.getElementById("lightbox-img").src = images[currentIdx];
-			}
+            function navImage(dir) {
+                currentIdx = (currentIdx + dir + images.length) % images.length;
+                document.getElementById("lightbox-img").src = images[currentIdx];
+            }
 
-			document.getElementById("lightbox").addEventListener("click", function(e) {
-				if (e.target === this) closeLightbox();
-			});
+            document.getElementById("lightbox").addEventListener("click", function (e) {
+                if (e.target === this) closeLightbox();
+            });
 
-			document.addEventListener("keydown", function(e) {
-				var lb = document.getElementById("lightbox");
-				if (lb.style.display !== "flex") return;
-				if (e.key === "Escape") closeLightbox();
-				if (e.key === "ArrowLeft") navImage(-1);
-				if (e.key === "ArrowRight") navImage(1);
-			});
-		</script>
-</body>
+            document.addEventListener("keydown", function (e) {
+                var lb = document.getElementById("lightbox");
+                if (lb.style.display !== "flex") return;
+                if (e.key === "Escape") closeLightbox();
+                if (e.key === "ArrowLeft") navImage(-1);
+                if (e.key === "ArrowRight") navImage(1);
+            });
+        </script>
+        {{template "sitefooter"}}
+    </body>
 </html>

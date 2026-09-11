@@ -1,7 +1,10 @@
 package main
 
 import (
+	"encoding/binary"
+	"fmt"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -38,6 +41,8 @@ type PageData struct {
 var templates = template.Must(template.ParseFiles(
 	"templates/texts.html",
 	"templates/content.html",
+	"templates/head.html",
+	"templates/footer.html",
 	"templates/base.html",
 	"templates/index.html",
 	"templates/header.html",
@@ -48,7 +53,38 @@ var templates = template.Must(template.ParseFiles(
 ))
 
 type ImagePageData struct {
-	Images []string
+	Images []GalleryImage
+}
+
+// GalleryImage carries the URL plus an intrinsic aspect ratio so the
+// browser can reserve space and avoid layout shift while photos load.
+type GalleryImage struct {
+	Src   string
+	Ratio template.CSS
+}
+
+// imageRatio reads the AVIF "ispe" (image spatial extents) box from the
+// file header and returns a CSS aspect-ratio value like "1627/1080".
+func imageRatio(path string) string {
+	f, err := os.Open(path)
+	if err != nil {
+		return ""
+	}
+	defer f.Close()
+
+	buf := make([]byte, 16*1024)
+	n, _ := io.ReadFull(f, buf)
+	for i := 0; i+16 <= n; i++ {
+		if string(buf[i:i+4]) == "ispe" {
+			w := binary.BigEndian.Uint32(buf[i+8 : i+12])
+			h := binary.BigEndian.Uint32(buf[i+12 : i+16])
+			if w > 0 && h > 0 {
+				return fmt.Sprintf("%d/%d", w, h)
+			}
+			return ""
+		}
+	}
+	return ""
 }
 
 func main() {
@@ -69,7 +105,7 @@ func main() {
 }
 
 func galleryHandler(w http.ResponseWriter, r *http.Request) {
-	var images []string
+	var images []GalleryImage
 
 	for _, dir := range dirs {
 		files, err := os.ReadDir("static/images/" + dir)
@@ -80,7 +116,11 @@ func galleryHandler(w http.ResponseWriter, r *http.Request) {
 		for _, file := range files {
 			ext := strings.ToLower(filepath.Ext(file.Name()))
 			if !file.IsDir() && allowedExts[ext] {
-				images = append(images, "/static/images/"+dir+"/"+file.Name())
+				src := "/static/images/" + dir + "/" + file.Name()
+				images = append(images, GalleryImage{
+					Src:   src,
+					Ratio: template.CSS(imageRatio(filepath.Join("static", "images", dir, file.Name()))),
+				})
 			}
 		}
 	}
@@ -134,7 +174,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 					http.Error(w, "Cannot read text file", http.StatusInternalServerError)
 					return
 				}
-				data.HContent = template.HTML(string(hContent))
+				data.HContent = template.HTML(strings.TrimPrefix(string(hContent), "\ufeff"))
 			} else {
 				if category == "authors_text" && (text == "poem_ita.txt" || text == "Alshynbai_poem.txt") {
 					data.AlshynbaiPoem = true
@@ -144,7 +184,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 					http.Error(w, "Cannot read text file", http.StatusInternalServerError)
 					return
 				}
-				data.Content = string(Content)
+				data.Content = strings.TrimPrefix(string(Content), "\ufeff")
 			}
 		} else {
 			files, err := os.ReadDir(filepath.Join("static", category))

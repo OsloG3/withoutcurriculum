@@ -1,47 +1,34 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>without curriculum</title>
-        <link rel="icon" type="image/svg+xml" href="static/favicon.svg" />
-        <link rel="stylesheet" href="static/style.css" />
+        {{template "head"}}
     </head>
     <body>
         {{template "header.html"}}
-        <section id="about">
-            {{if .Selected}} {{template "texts.html" .}} {{end}} {{if
+        <section class="page" id="about">
+            {{if and .Selected (not .Texts)}}
+            <p class="backrow">
+                {{if or (eq .Selected "author") (eq .Selected "authors_text")}}
+                <a class="backlink" href="/authors">&larr; Back to authors</a>
+                {{else}}
+                <a class="backlink" href="/?category={{.Selected}}"
+                    >&larr; Back to list</a
+                >
+                {{end}}
+            </p>
+            {{end}} {{if .Selected}} {{template "texts.html" .}} {{end}} {{if
             .AlshynbaiPoem}}
             <img
-                src="static/media/Alshynbai2.jpeg"
+                class="pull-img"
+                src="/static/media/Alshynbai2.jpeg"
                 alt="Alshynbai"
-                style="
-                    max-width: 40vw;
-                    height: auto;
-                    padding-bottom: 3%;
-                    padding-left: 2%;
-                    padding-right: 2%;
-                    margin-left: auto;
-                    float: right;
-                "
             />
             {{end}} {{if .Content}}
-            <pre
-                style="
-                    white-space: pre-wrap;
-                    word-wrap: break-word;
-                    overflow-wrap: anywhere;
-                    text-align: justify;
-                    margin-left: 3%;
-                    margin-right: 3%;
-                    margin-top: 0px;
-                "
-            >
-                {{.Content}}
-            </pre>
+            <pre class="text-body">{{.Content}}</pre>
             {{end}} {{if .HContent}}
             <div class="hcont">{{.HContent}}</div>
             {{end}}
         </section>
+        {{template "sitefooter"}}
     </body>
 </html>

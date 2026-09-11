@@ -1,23 +1,31 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>without curriculum</title>
-        <link rel="icon" type="image/svg+xml" href="static/favicon.svg" />
-        <link rel="stylesheet" href="static/style.css" />
+        {{template "head"}}
     </head>
     <body>
         {{template "header.html"}}
-        <section id="about">
-            <div class="pad" stlye="font-size: 2.5em">
-                <br />
-                You can reach me through the following contacts:<br /><br />
-
-                &emsp;&emsp;Email: tincagardenghi@gmail.com<br />
-
-                &emsp;&emsp;Phone: +34 641 372 003<br /><br />
+        <section class="page" id="contacts">
+            <h2 class="page-title">
+                <span class="orn">{{template "flower"}}</span> Contact
+                <span class="orn">{{template "flower"}}</span>
+            </h2>
+            <div class="contact-card">
+                <p>You can reach me through the following contacts:</p>
+                <ul class="contact-list">
+                    <li>
+                        <span class="contact-label">Email</span>
+                        <a href="mailto:tincagardenghi@gmail.com"
+                            >tincagardenghi@gmail.com</a
+                        >
+                    </li>
+                    <li>
+                        <span class="contact-label">Phone</span>
+                        <a href="tel:+34641372003">+34 641 372 003</a>
+                    </li>
+                </ul>
             </div>
         </section>
+        {{template "sitefooter"}}
     </body>
 </html>

@@ -1,76 +1,74 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>without curriculum</title>
-        <link rel="icon" type="image/svg+xml" href="static/favicon.svg" />
-        <link rel="stylesheet" href="static/style.css" />
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }
-            .gallery {
-                display: flex;
-                gap: 15px; /* space between columns */
-            }
-            .column {
-                display: flex;
-                flex-direction: column;
-                gap: 15px; /* space between items */
-            }
-            .gallery img {
-                width: 100%;
-                margin-bottom: 15px;
-                display: block;
-                border-radius: 0.5px;
-                cursor: pointer;
-                transition: transform 0.2s;
-            }
-            .gallery img:hover {
-                transform: scale(1.02);
-            }
-        </style>
+        {{template "head"}}
     </head>
     <body>
         {{template "header.html"}}
-        <section id="about">
-            <div class="gallery">
-                <div class="column">
+        <section class="page" id="novels">
+            <h2 class="page-title">
+                <span class="orn">{{template "flower"}}</span> Novels
+                <span class="orn">{{template "flower"}}</span>
+            </h2>
+            <div class="book-grid">
+                <div class="book-stack">
                     <a href="/?category=novels&text=comedia_ita.html"
-                        ><img src="static/media/sogni-inabissati.png"
+                        ><img
+                            src="/static/media/sogni-inabissati.png"
+                            alt="Sogni inabissati"
+                            loading="lazy"
                     /></a>
                     <a href="/?category=novels&text=comedia_spa.html"
-                        ><img src="static/media/comediai_spa.jpeg"
+                        ><img
+                            src="/static/media/comediai_spa.jpeg"
+                            alt="Comedia - español"
+                            loading="lazy"
                     /></a>
                     <a href="/?category=novels&text=comedia_rus.html"
-                        ><img src="static/media/CommediaRUS.png"
+                        ><img
+                            src="/static/media/CommediaRUS.png"
+                            alt="Комедия - русский"
+                            loading="lazy"
                     /></a>
                     <a href="/static/novels/O_catalogo_dos_sonhos.pdf"
-                        ><img src="static/media/commediaPORT.png"
+                        ><img
+                            src="/static/media/commediaPORT.png"
+                            alt="O catálogo dos sonhos - português"
+                            loading="lazy"
                     /></a>
                 </div>
-                <div class="column">
+                <div class="book-stack">
                     <a
                         href="/?category=novels&text=i_cerchi_della_solitudine.html"
-                        ><img src="static/media/cerchi.jpg"
+                        ><img
+                            src="/static/media/cerchi.jpg"
+                            alt="I cerchi della solitudine"
+                            loading="lazy"
                     /></a>
                     <a href="/?category=novels&text=los_circulos.html"
-                        ><img src="static/media/spa_cerchi.png"
+                        ><img
+                            src="/static/media/spa_cerchi.png"
+                            alt="Los círculos de la soledad"
+                            loading="lazy"
                     /></a>
                     <a
                         href="/?category=novels&text=i_cerchi_della_solitudine_rus.html"
-                        ><img src="static/media/rus1.png"
+                        ><img
+                            src="/static/media/rus1.png"
+                            alt="Круги одиночества"
+                            loading="lazy"
                     /></a>
                 </div>
-                <div class="column">
+                <div class="book-stack">
                     <a href="/?category=novels&text=gli_eletti.html"
-                        ><img src="static/media/gli-eletti.png"
+                        ><img
+                            src="/static/media/gli-eletti.png"
+                            alt="Gli eletti"
+                            loading="lazy"
                     /></a>
                 </div>
             </div>
         </section>
-        <div class="footer">Tinca Gardenghi</div>
+        {{template "sitefooter"}}
     </body>
 </html>
